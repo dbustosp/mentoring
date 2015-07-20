@@ -1,4 +1,4 @@
-var seneca = require('seneca')()
+var seneca = require('seneca')();
 
 //seneca
 //	.client()

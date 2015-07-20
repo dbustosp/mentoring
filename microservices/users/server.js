@@ -1,7 +1,7 @@
 var seneca = require('seneca')()
 var express = require('express')
 
-var methods = require('./methods/methods')
+var methods = require('./methods/methods');
 
 seneca
 	.add(
