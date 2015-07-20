@@ -1,9 +1,12 @@
-// Here is gonna all the functions to manage users
+// Here is gonna be all the functions to manage users
 var mongoose = require('mongoose');
+var db = mongoose.connect('mongodb://localhost/efx_employee')
 
 exports.getAll = function (args , done) {
-	console.log("init -- getAll")
-	done(null)
+	modelUser.find({}, function(err, users) {
+		if (err) callback(null, {'success': false, message: 'Something wrong happened!'})
+		callback(null, {'success': true, message: users})
+	});
 }
 
 exports.get = function (args , done) {
