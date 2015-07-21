@@ -7,6 +7,7 @@ var userSchema = new mongoose.Schema({
 	startDate: {type: String, unique: false, required: false},
 	position: {type: String, unique: false, required: false},
 	username: {type: String, unique: false, required: false},
+	team: {type: String, unique: false, required: false},
 	gender: {type: String, unique: false, required: false},
 	password: {type: String, unique: false, required: false},
 	email: {
