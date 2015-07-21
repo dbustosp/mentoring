@@ -10,9 +10,26 @@ exports.getAll = function (args , callback) {
 	});
 }
 
-exports.get = function (args , done) {
-	console.log("init -- getUser")
-	done (null)
+exports.get = function (args , callback) {
+	var username = args.username;
+	console.log("username: " + username);
+
+	modelUser.findOne({username: username}, function(err, usr) {
+		if (err) {
+			callback(null, {'success': false, message: "Ups! Something is wrong."});
+		} else {
+			if (!usr) {
+				callback(null, {'success': false, message: "User did not find."});
+			} else {
+				user = {
+					username: usr.username,
+					name: usr.name, 
+					team: usr.team,
+				};
+				callback(null, {'success': true, message: user});
+			}
+		}
+	});
 }
 
 exports.add = function (args, done) {
