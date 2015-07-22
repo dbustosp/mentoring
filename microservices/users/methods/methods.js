@@ -12,7 +12,6 @@ exports.getAll = function (args , callback) {
 
 exports.get = function (args , callback) {
 	var username = args.username;
-	console.log("username: " + username);
 
 	modelUser.findOne({username: username}, function(err, usr) {
 		if (err) {
@@ -32,9 +31,39 @@ exports.get = function (args , callback) {
 	});
 }
 
-exports.add = function (args, done) {
-	console.log("init -- add")
-	done(null)
+exports.add = function (args, callback) {
+	var name = args.name;
+	var birthday = args.birthday;
+	var startDate = args.startDate;
+	var position = args.position;
+	var username = args.username;
+	var team = args.team;
+	var gender = args.gender;
+	var password = args.password;
+	var email = args.email;
+
+	if (name === "" || name == undefined) {
+		callback( null, {'success': false, message: "The system required at least the name of the user"});
+	} else {
+		modelUser.create({
+			name: name, 
+			birthday: birthday,
+			startDate: startDate,
+			position: position,
+			username: username,
+			team: team,
+			gender: gender,
+			//password: password,
+			email: email
+		}, 
+		function(err, usr) {
+			if (err) {
+				callback(null, {'success': false, message: err});
+			} else {
+				callback(null, {'success': true, message: usr});
+			}
+		});
+	}
 }
 
 exports.remove = function (args, done) {

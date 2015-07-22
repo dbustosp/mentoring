@@ -15,5 +15,4 @@ seneca
 seneca
 	.add ({action: 'getAll'}, methods.getAll)
 	.add ({action: 'get'}, methods.get)
-	//.add ({action: 'edit'}, methods.edit)
-	//.add ({action: 'add'}, methods.add)
+	.add ({action: 'add'}, methods.add)
