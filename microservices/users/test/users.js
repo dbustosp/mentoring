@@ -3,9 +3,12 @@ var seneca = require('seneca')()
 	//.error( assert.fail )
 
 
-get_users()
-get_user()
-create_user()
+NUM_USERS = 64
+
+//get_users()
+//get_user()
+//create_user()
+//remove_user()
 
 function get_users() {
 	seneca
@@ -14,7 +17,7 @@ function get_users() {
 			{action: 'getAll'},
 			function(err, users) {
 				if (err) return console.error(err);
-				assert.equal( users.message.length, 72);
+				assert.equal( users.message.length, NUM_USERS);
 			}
 		)
 }
@@ -56,6 +59,26 @@ function create_user() {
 						assert.equal(user_saved.message.username, result.message.username);
 					} 
 				)
+			}
+		)
+}
+
+function remove_user() {
+	seneca
+		.client()
+		.act (
+			{action: 'remove', username: 'jcf16'},
+			function(err, result) {
+				if (err) return console.error(err);
+
+				this.act (
+					{action: 'getAll'},
+					function(err, users) {
+						if (err) return console.error(err);
+						assert.equal(NUM_USERS, users.message.length)
+					}
+				)
+
 			}
 		)
 }
