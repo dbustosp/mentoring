@@ -1,37 +1,43 @@
-// Here is gonna be all the functions to manage users
 var mongoose = require('mongoose');
 var db = mongoose.connect('mongodb://localhost/efx_employee');
 var modelUser = require('../model/user');
 
-exports.getAll = function (args , callback) {
+exports.getAll = function(args , callback) {
 	modelUser.find({}, function(err, users) {
-		if (err) callback(null, {'success': false, message: 'Something wrong happened!'})
-		callback(null, {'success': true, message: users})
+		if (err) {
+			callback(new Error(err));
+		} else {
+			callback(null, {message: users})
+		}
 	});
 }
 
-exports.get = function (args , callback) {
+exports.get = function(args , callback) {
 	var username = args.username;
-
 	modelUser.findOne({username: username}, function(err, usr) {
 		if (err) {
-			callback(null, {'success': false, message: "Ups! Something is wrong."});
+			callback(new Error(err));
 		} else {
 			if (!usr) {
-				callback(null, {'success': false, message: "User did not find."});
+				callback(new Error(err));
 			} else {
 				user = {
 					username: usr.username,
 					name: usr.name, 
 					team: usr.team,
+					birthday: usr.birthdaym,
+					gender: usr.gender,
+					email: usr.email,
+					startDate: usr.startDate,
+					position: usr.position,
 				};
-				callback(null, {'success': true, message: user});
+				callback(null, {message: user});
 			}
 		}
 	});
 }
 
-exports.add = function (args, callback) {
+exports.add = function(args, callback) {
 	var name = args.name;
 	var birthday = args.birthday;
 	var startDate = args.startDate;
@@ -43,7 +49,7 @@ exports.add = function (args, callback) {
 	var email = args.email;
 
 	if (name === "" || name == undefined) {
-		callback( null, {'success': false, message: "The system required at least the name of the user"});
+		callback(new Error("Parameters wrong!"));
 	} else {
 		modelUser.create({
 			name: name, 
@@ -58,20 +64,30 @@ exports.add = function (args, callback) {
 		}, 
 		function(err, usr) {
 			if (err) {
-				callback(null, {'success': false, message: err});
+				callback(new Error(err));
 			} else {
-				callback(null, {'success': true, message: usr});
+				callback(null, {message: usr});
 			}
 		});
 	}
 }
 
-exports.remove = function (args, done) {
-	console.log("init -- remove")
-	done(null)
+exports.remove = function(args, callback) {
+	var username = args.username;
+
+	console.log("username: " + username);
+
+	if (username === "" || username === undefined) {
+		callback(new Error("Please provide an username!"));
+	} else {
+		modelUser.findOneAndRemove({username: username}, function(err) {
+			if (err) {
+				callback(new Error(err));
+			} else {
+				callback(null, {message: "User removed successfully!"});
+			}
+		});
+	}
 }
 
-exports.edit = function (args, done) {
-	console.log("init -- edit")
-	done(null)
-}
+

@@ -16,3 +16,4 @@ seneca
 	.add ({action: 'getAll'}, methods.getAll)
 	.add ({action: 'get'}, methods.get)
 	.add ({action: 'add'}, methods.add)
+	.add ({action: 'remove'}, methods.remove)
